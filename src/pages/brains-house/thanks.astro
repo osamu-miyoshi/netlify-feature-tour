@@ -1,0 +1,72 @@
+---
+import { company, afterSubmit } from "../../data/brains-house";
+---
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ご送信ありがとうございました｜ブレインズの家</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+</head>
+<body>
+  <main class="done">
+    <p class="mark">✓</p>
+    <h1>ありがとうございます。<br />確かに承りました。</h1>
+    <p class="lead">
+      この後の流れをご案内します。ご連絡までしばらくお待ちください。
+    </p>
+
+    <ol class="after">
+      {afterSubmit.map((a) => (
+        <li>
+          <span class="after-step">STEP {a.step}</span>
+          <strong>{a.label}</strong>
+          <span class="after-body">{a.body}</span>
+        </li>
+      ))}
+    </ol>
+
+    <div class="or">
+      <p>お急ぎの場合は、お電話ください。</p>
+      <a class="tel-big" href={`tel:${company.tel.replace(/[^0-9]/g, "")}`}>{company.tel}</a>
+      <small>{company.telHours}</small>
+    </div>
+
+    <p class="back"><a href="/brains-house/">ブレインズの家のページへ戻る</a></p>
+    <p class="foot">{company.name}</p>
+  </main>
+
+  <style is:global>
+    :root {
+      --bg: #fbf9f5; --ink: #1a1917; --muted: #6e6862; --line: #e2dbd0;
+      --accent: #35533f; --amber: #b5762a;
+      --serif: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+      --sans: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.9; }
+    .done { width: min(92vw, 640px); margin: 0 auto; padding: clamp(3rem, 10vw, 6rem) 0; text-align: center; }
+    .mark {
+      width: 3.4rem; height: 3.4rem; margin: 0 auto 1.5rem; border-radius: 50%;
+      background: var(--accent); color: #fff; font-size: 1.6rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    h1 { font-family: var(--serif); font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 600; line-height: 1.55; margin: 0 0 1.2rem; }
+    .lead { color: #46423d; font-size: .95rem; margin: 0 0 2.5rem; }
+    .after { list-style: none; padding: 0; margin: 0 0 3rem; display: grid; gap: .8rem; text-align: left; }
+    .after li { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 1.1rem 1.3rem; display: flex; flex-direction: column; gap: .15rem; }
+    .after-step { font-family: var(--serif); font-size: .72rem; letter-spacing: .14em; color: var(--amber); }
+    .after strong { font-size: 1rem; }
+    .after-body { font-size: .85rem; color: var(--muted); line-height: 1.7; }
+    .or { border-top: 1px solid var(--line); padding-top: 2rem; }
+    .or p { font-size: .85rem; color: var(--muted); margin: 0 0 .3rem; }
+    .tel-big { font-family: var(--serif); font-size: clamp(1.5rem, 5vw, 2rem); color: var(--ink); text-decoration: none; }
+    .or small { display: block; font-size: .72rem; color: var(--muted); }
+    .back { margin-top: 2.5rem; font-size: .85rem; }
+    .back a { color: var(--accent); }
+    .foot { font-size: .72rem; color: var(--muted); margin-top: 2rem; }
+  </style>
+</body>
+</html>

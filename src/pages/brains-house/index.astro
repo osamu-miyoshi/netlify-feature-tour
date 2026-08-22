@@ -1,0 +1,734 @@
+---
+import {
+  company, hero, proofBar, mechanism, savingsLogic, comparison,
+  specs, properties, propertiesNote, roomTours, voices, faqs, afterSubmit,
+} from "../../data/brains-house";
+
+const title = "ブレインズの家｜半田・知多・阿久比の新築分譲住宅";
+const description =
+  "大容量の太陽光発電とテスラ製蓄電池が標準装備。900万円安い家と同じ総支払額で手に入る、光熱費のかからない新築分譲住宅。創業30年、知多半島のチタコーポレーション。";
+---
+<!DOCTYPE html>
+<html lang="ja" data-v="a">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <!-- 要素7：ABテスト。?v=b でB案を表示し、フォームに variant を送信する。
+       描画前に属性を立てて、切り替わりのチラつきを防ぐ。 -->
+  <script is:inline>
+    (function () {
+      var v = new URLSearchParams(location.search).get("v");
+      if (v === "b") document.documentElement.dataset.v = "b";
+    })();
+  </script>
+</head>
+<body>
+
+<!-- ═══════ 固定ヘッダー：CTAを常に画面内に置く ═══════ -->
+<header class="bar">
+  <div class="bar-in">
+    <a class="logo" href="/brains-house/">
+      <strong>BRAINS</strong><span>ブレインズの家</span>
+    </a>
+    <div class="bar-cta">
+      <a class="tel" href={`tel:${company.tel.replace(/[^0-9]/g, "")}`}>
+        <span class="tel-num">{company.tel}</span>
+        <span class="tel-hours">{company.telHours}</span>
+      </a>
+      <a class="btn btn-primary btn-sm" href="#reserve">来場予約</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══════════════════════════════════════════════
+       要素4｜ファーストビュー ─ ここで60%が決まる
+       ヘッドライン / キービジュアル / サブヘッド の3点セット
+       ═══════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-in">
+      <div class="hero-copy">
+        <p class="eyebrow">{hero.a.eyebrow}</p>
+
+        <h1 class="hero-h">
+          <span class="var-a">
+            {hero.a.headline[0]}<br />
+            <em>{hero.a.headline[1]}</em>
+          </span>
+          <span class="var-b">
+            {hero.b.headline[0]}<br />
+            <em>{hero.b.headline[1]}</em>
+          </span>
+        </h1>
+
+        <p class="hero-sub">
+          <span class="var-a">{hero.a.subhead}</span>
+          <span class="var-b">{hero.b.subhead}</span>
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="#reserve">現地を見学する（来場予約）</a>
+          <a class="btn btn-ghost btn-lg" href="#reserve">資料を受け取る</a>
+        </div>
+        <p class="hero-micro">入力は30秒ほど。しつこい営業はいたしません。</p>
+      </div>
+
+      <figure class="hero-visual">
+        <div class="ph ph-hero">
+          <span class="var-a">{hero.a.visualNote}</span>
+          <span class="var-b">{hero.b.visualNote}</span>
+          <small>写真を差し替えてください</small>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       要素5｜社会的証明を早めに置く
+       「怪しくないか」をFV直後に潰す
+       ═══════════════════════════════════════════════ -->
+  <section class="proof">
+    <ul class="proof-list">
+      {proofBar.map((p) => (
+        <li>
+          <strong>{p.value}</strong>
+          <span>{p.label}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- ═══════ 新PASONA ─ P：問題提起（煽らず、事実を置く）═══════ -->
+  <section class="sec sec-problem">
+    <div class="wrap narrow">
+      <p class="kicker">Problem</p>
+      <h2>その光熱費、この先ずっと同じ額だと思っていませんか。</h2>
+      <p>
+        家を選ぶとき、多くの方が比べるのは建物の価格です。けれど実際に毎月払うのは、
+        住宅ローンと光熱費の合計です。
+      </p>
+      <p class="big-fact">
+        一般的な住宅の光熱費は <strong>{savingsLogic.monthlyUtility}</strong>。<br />
+        これを住宅ローンの借入に換算すると、<em>{savingsLogic.loanEquivalent}</em>にあたります。
+      </p>
+      <p>
+        つまり光熱費のかからない家は、それだけで<strong>{savingsLogic.loanEquivalent}安い家</strong>と
+        同じ総支払額になります。同じ月々の支払いで、住める家が変わるということです。
+      </p>
+      <p class="note">{savingsLogic.note}</p>
+    </div>
+  </section>
+
+  <!-- ═══════ 新PASONA ─ A：親近感（Agitation＝煽りではなくAffinity）═══════ -->
+  <section class="sec sec-affinity">
+    <div class="wrap narrow">
+      <p class="kicker">Affinity</p>
+      <h2>「家賃も光熱費も、これ以上増やしたくない」</h2>
+      <p>
+        私たちチタコーポレーションは、{company.foundedYear}年から{company.yearsInBusiness}年以上、
+        半田を中心に知多半島で住まいのご相談をお受けしてきました。土地探しも、賃貸も、売却も、
+        注文住宅も、同じ会社でお受けしています。
+      </p>
+      <p>
+        そのなかで一番多くうかがってきたのが、この言葉です。家は欲しい。けれど、いま払っている家賃に
+        光熱費が上乗せされて、生活が今より苦しくなるのが怖い。打ち合わせを何十回も重ねる時間もない。
+        かといって、どこかで見たような家に住むのも気が進まない。
+      </p>
+      <p>
+        <strong>ブレインズの家は、その3つを同時に解こうとして生まれた分譲住宅です。</strong>
+        ACTUSのインテリアを扱う私たちBRAINSが、イシンホームの高性能住宅にACTUSの家具を
+        入れたところから、このブランドは始まりました。
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════ 新PASONA ─ S：解決策 ＋ O：オファー（メカニズム）═══════ -->
+  <section class="sec sec-solution">
+    <div class="wrap">
+      <p class="kicker">Solution &amp; Offer</p>
+      <h2>なぜ、光熱費がほとんどかからないのか。</h2>
+      <p class="lead">
+        「高性能だから」では説明になりません。仕組みは3つです。
+      </p>
+
+      <ol class="mech">
+        {mechanism.map((m) => (
+          <li>
+            <span class="mech-step">{m.step}</span>
+            <h3>{m.title}</h3>
+            <p>{m.body}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="equation">
+        <p>つくる量を増やし、貯めて夜に使い、逃がさない。</p>
+        <p class="equation-out">
+          だから、<em>{savingsLogic.loanEquivalent}</em>安い家と同じ総支払額になります。
+        </p>
+      </div>
+
+      <h3 class="sub-h">標準装備</h3>
+      <dl class="specs">
+        {specs.map((s) => (
+          <div class="spec">
+            <dt>{s.label}</dt>
+            <dd>{s.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="note">
+        オプションではありません。すべて標準装備です。あとから足す費用はかかりません。
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════ 差別化 ─ 項目別で示さないと刺さらない ═══════ -->
+  <section class="sec sec-compare">
+    <div class="wrap">
+      <p class="kicker">Difference</p>
+      <h2>他の家と、何がどう違うのか。</h2>
+      <p class="lead">「品質が高い」「丁寧」ではなく、項目で比べてください。</p>
+
+      <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr>
+              <th scope="col">項目</th>
+              {comparison.columns.map((c, i) => (
+                <th scope="col" class={i === 0 ? "col-own" : ""}>{c}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.rows.map((r) => (
+              <tr>
+                <th scope="row">{r.item}</th>
+                {r.values.map((v, i) => (
+                  <td class={i === 0 ? "col-own" : ""}>{v}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        比較内容は一般的な仕様の傾向をまとめたものです。各社の実際の仕様とは異なる場合があります。
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════ 物件ラインナップ ═══════ -->
+  <section class="sec sec-properties">
+    <div class="wrap">
+      <p class="kicker">Properties</p>
+      <h2>いま見学できる家</h2>
+
+      <div class="cards">
+        {properties.map((p) => (
+          <article class="card">
+            <div class="ph ph-card"><small>外観写真</small></div>
+            <div class="card-body">
+              {p.tag && <span class="tag">{p.tag}</span>}
+              <h3>{p.name}</h3>
+              <p class="card-area">{p.area}</p>
+              <p class="card-price">{p.price}</p>
+              <p class="card-monthly">{p.monthly}</p>
+              {p.note && <p class="card-note">{p.note}</p>}
+              <a class="btn btn-ghost btn-block" href="#reserve">この家を見学する</a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="note">{propertiesNote}</p>
+    </div>
+  </section>
+
+  <!-- ═══════ ルームツアー動画
+       （感覚では「無い方がいい」と思いがちだが、有る方がCVRが高い事例がある。
+         要素7で必ずテストすること）═══════ -->
+  <section class="sec sec-tour">
+    <div class="wrap">
+      <p class="kicker">Room Tour</p>
+      <h2>実際の部屋を、歩いて見る。</h2>
+      <div class="tours">
+        {roomTours.map((t) => (
+          <figure class="tour">
+            <div class="tour-frame">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${t.youtubeId}`}
+                title={t.title}
+                loading="lazy"
+                frameborder="0"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <figcaption>{t.title}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ お客様の声 ═══════ -->
+  <section class="sec sec-voices">
+    <div class="wrap">
+      <p class="kicker">Voices</p>
+      <h2>住んでいる方の話</h2>
+      <div class="voices">
+        {voices.map((v) => (
+          <blockquote class="voice">
+            <p>{v.quote}</p>
+            <footer>
+              <strong>{v.name}</strong>
+              <span>{v.detail}</span>
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 新PASONA ─ N：絞り込み（架空の締切は作らない）═══════ -->
+  <section class="sec sec-narrow">
+    <div class="wrap narrow">
+      <p class="kicker">Narrow down</p>
+      <h2>分譲住宅は、同じ家が二つとありません。</h2>
+      <p>
+        ブレインズの家は、一軒ごとに土地も間取りもデザインも違います。だから、
+        <strong>気に入った一軒に住めるのは1組だけ</strong>です。
+      </p>
+      <p>
+        「もう少し考えてから」と思っているあいだに、その家が決まってしまうことがあります。
+        急かすつもりはありません。ただ、見てから考えるほうが、後悔は少ないはずです。
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════ FAQ ─ 出口の手前で不安を潰す ═══════ -->
+  <section class="sec sec-faq">
+    <div class="wrap narrow">
+      <p class="kicker">FAQ</p>
+      <h2>ご不安な点</h2>
+      {faqs.map((f) => (
+        <details class="faq">
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       要素4｜コンバージョンポイント ─ ここで20%が決まる
+       ・入力した先の未来を書く
+       ・項目分岐を先頭に置き、いきなり氏名住所を求めない
+       ・必須は最小限
+       ・送信ボタンの真上で不安を潰す
+       ═══════════════════════════════════════════════ -->
+  <section class="sec sec-reserve" id="reserve">
+    <div class="wrap narrow">
+      <p class="kicker">Action</p>
+      <h2>30秒で、来場予約。</h2>
+
+      <ol class="after">
+        {afterSubmit.map((a) => (
+          <li>
+            <span class="after-step">{a.step}</span>
+            <strong>{a.label}</strong>
+            <span class="after-body">{a.body}</span>
+          </li>
+        ))}
+      </ol>
+
+      <form
+        class="form"
+        name="brains-house-reserve"
+        method="POST"
+        action="/brains-house/thanks"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="brains-house-reserve" />
+        <input type="hidden" name="variant" id="variant-field" value="a" />
+        <p class="hp">
+          <label>この欄は入力しないでください <input name="bot-field" /></label>
+        </p>
+
+        <!-- 分岐を先頭に：答えた勢いのまま氏名入力へ進んでもらう -->
+        <fieldset class="fs">
+          <legend>ご希望をお選びください</legend>
+          <div class="choices">
+            <label class="choice">
+              <input type="radio" name="希望" value="来場予約" checked />
+              <span><strong>現地を見学したい</strong><small>所要約60分</small></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="希望" value="資料請求" />
+              <span><strong>まず資料を見たい</strong><small>物件情報と標準仕様</small></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="希望" value="相談" />
+              <span><strong>相談だけしたい</strong><small>予算・ローン・売却</small></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <label class="f">
+          <span class="f-label">お名前 <b class="req">必須</b></span>
+          <input type="text" name="お名前" required autocomplete="name" placeholder="知多 太郎" />
+        </label>
+
+        <label class="f">
+          <span class="f-label">お電話番号 <b class="req">必須</b></span>
+          <input type="tel" name="電話番号" required autocomplete="tel" inputmode="tel" placeholder="09000000000" />
+        </label>
+
+        <label class="f">
+          <span class="f-label">メールアドレス <b class="opt">任意</b></span>
+          <input type="email" name="メールアドレス" autocomplete="email" placeholder="example@example.com" />
+        </label>
+
+        <label class="f">
+          <span class="f-label">気になっている物件 <b class="opt">任意</b></span>
+          <select name="気になっている物件">
+            <option value="">選択しない（おまかせ）</option>
+            {properties.map((p) => (
+              <option value={p.name}>{p.name}（{p.area}）</option>
+            ))}
+          </select>
+        </label>
+
+        <label class="f">
+          <span class="f-label">ご希望の日程 <b class="opt">任意</b></span>
+          <input type="text" name="希望日程" placeholder="例）今週末の午後、平日の夕方 など" />
+        </label>
+
+        <label class="f">
+          <span class="f-label">ご質問・ご要望 <b class="opt">任意</b></span>
+          <textarea name="ご要望" rows="3" placeholder="ローンのこと、今の家の売却のことなど"></textarea>
+        </label>
+
+        <!-- 不安を、送信ボタンの真上で潰す -->
+        <p class="assure">
+          いただいた内容は物件のご案内以外には使用しません。<br />
+          <strong>その場での契約のお話や、しつこいご連絡はいたしません。</strong>
+        </p>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block">この内容で送信する</button>
+      </form>
+
+      <div class="or">
+        <span>お電話でも承ります</span>
+        <a class="tel-big" href={`tel:${company.tel.replace(/[^0-9]/g, "")}`}>{company.tel}</a>
+        <small>{company.telHours}</small>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="foot-brand"><strong>BRAINS</strong> ブレインズの家</p>
+    <p>{company.name}</p>
+    <p class="foot-areas">対応エリア：{company.areas.join("・")}</p>
+    <p class="foot-license">宅地建物取引業免許　{company.license}</p>
+  </div>
+</footer>
+
+<!-- スマホ用の追従CTA。出口を常に指1本の距離に置く -->
+<div class="sticky-cta">
+  <a class="btn btn-ghost" href={`tel:${company.tel.replace(/[^0-9]/g, "")}`}>電話する</a>
+  <a class="btn btn-primary" href="#reserve">来場予約</a>
+</div>
+
+<script is:inline>
+  // どちらのパターンを見て申し込んだかを記録する（要素7の計測）
+  (function () {
+    var f = document.getElementById("variant-field");
+    if (f) f.value = document.documentElement.dataset.v || "a";
+  })();
+</script>
+
+<style is:global>
+  :root {
+    --bg: #fbf9f5;
+    --bg-alt: #f3efe8;
+    --ink: #1a1917;
+    --muted: #6e6862;
+    --line: #e2dbd0;
+    --accent: #35533f;
+    --accent-dark: #274031;
+    --amber: #b5762a;
+    --white: #fff;
+    --serif: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+    --sans: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+    --w: 1080px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  /* 固定ヘッダーの分だけアンカー位置を下げる。#reserve へ飛んだとき見出しが隠れないように。 */
+  [id] { scroll-margin-top: 5.5rem; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.4; letter-spacing: .01em; }
+  p { margin: 0 0 1.2em; }
+  img { max-width: 100%; }
+
+  /* ── ABテストの出し分け ── */
+  .var-b { display: none; }
+  [data-v="b"] .var-a { display: none; }
+  [data-v="b"] .var-b { display: inline; }
+
+  .wrap { width: min(92vw, var(--w)); margin: 0 auto; }
+  .wrap.narrow { width: min(92vw, 720px); }
+
+  /* ── ボタン ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: .4em; padding: .85em 1.6em; border-radius: 4px;
+    font-family: var(--sans); font-weight: 700; font-size: .95rem;
+    text-decoration: none; border: 1.5px solid transparent;
+    cursor: pointer; transition: .18s ease; line-height: 1.3; text-align: center;
+  }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+  .btn-ghost { background: transparent; color: var(--accent); border-color: var(--accent); }
+  .btn-ghost:hover { background: rgba(53, 83, 63, .07); }
+  .btn-lg { padding: 1.05em 2.2em; font-size: 1.02rem; }
+  .btn-sm { padding: .6em 1.2em; font-size: .85rem; }
+  .btn-block { width: 100%; }
+
+  /* ── 固定ヘッダー ── */
+  .bar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(251, 249, 245, .93);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar-in {
+    width: min(94vw, 1200px); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: .7rem 0;
+  }
+  .logo { text-decoration: none; color: var(--ink); display: flex; align-items: baseline; gap: .55rem; }
+  .logo strong { font-family: var(--serif); font-size: 1.15rem; letter-spacing: .16em; }
+  .logo span { font-size: .72rem; color: var(--muted); letter-spacing: .08em; }
+  .bar-cta { display: flex; align-items: center; gap: 1rem; }
+  .tel { text-decoration: none; color: var(--ink); text-align: right; line-height: 1.25; }
+  .tel-num { display: block; font-family: var(--serif); font-size: 1.05rem; font-weight: 600; }
+  .tel-hours { display: block; font-size: .65rem; color: var(--muted); }
+
+  /* ── ファーストビュー ── */
+  .hero { background: var(--bg); padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2rem, 5vw, 3.5rem); }
+  .hero-in {
+    width: min(92vw, 1200px); margin: 0 auto;
+    display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center;
+  }
+  .eyebrow {
+    font-size: .78rem; letter-spacing: .18em; color: var(--accent);
+    font-weight: 700; margin: 0 0 1.1rem;
+  }
+  .hero-h { font-size: clamp(1.75rem, 4.4vw, 3.05rem); margin: 0 0 1.3rem; letter-spacing: -.01em; }
+  .hero-h em {
+    font-style: normal;
+    background: linear-gradient(transparent 62%, rgba(181, 118, 42, .28) 62%);
+  }
+  .hero-sub { font-size: clamp(.95rem, 1.5vw, 1.05rem); color: #3a3733; margin-bottom: 1.8rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; }
+  .hero-micro { font-size: .78rem; color: var(--muted); margin: 1rem 0 0; }
+
+  .ph {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: .5rem; text-align: center; padding: 1.5rem;
+    background: repeating-linear-gradient(45deg, #efeae1, #efeae1 12px, #eae4d9 12px, #eae4d9 24px);
+    color: var(--muted); font-size: .82rem; border-radius: 6px; border: 1px dashed #cfc5b5;
+  }
+  .ph small { font-size: .68rem; letter-spacing: .1em; color: #a1958280; color: #9c9081; }
+  .ph-hero { aspect-ratio: 4 / 3; }
+  .ph-card { aspect-ratio: 16 / 10; border-radius: 0; border: none; border-bottom: 1px solid var(--line); }
+
+  /* ── 社会的証明 ── */
+  .proof { background: var(--accent); color: #fff; }
+  .proof-list {
+    width: min(92vw, 1200px); margin: 0 auto; padding: 1.5rem 0;
+    list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; text-align: center;
+  }
+  .proof-list li { display: flex; flex-direction: column; gap: .15rem; }
+  .proof-list strong { font-family: var(--serif); font-size: 1.3rem; letter-spacing: .04em; }
+  .proof-list span { font-size: .72rem; opacity: .85; line-height: 1.5; }
+
+  /* ── セクション共通 ── */
+  .sec { padding: clamp(3rem, 8vw, 5.5rem) 0; }
+  .sec-affinity, .sec-compare, .sec-voices, .sec-faq { background: var(--bg-alt); }
+  .sec-reserve { background: var(--accent); color: #fff; }
+  .kicker {
+    font-size: .7rem; letter-spacing: .24em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin: 0 0 .8rem;
+  }
+  .sec h2 { font-size: clamp(1.4rem, 3vw, 2.1rem); margin: 0 0 1.5rem; }
+  .lead { font-size: 1.02rem; color: #3a3733; }
+  .sub-h { font-size: 1.15rem; margin: 3rem 0 1.2rem; }
+  .note { font-size: .76rem; color: var(--muted); line-height: 1.75; margin-top: 1.5rem; }
+
+  .big-fact {
+    font-family: var(--serif); font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+    line-height: 1.9; padding: 1.6rem 1.8rem; margin: 2rem 0;
+    background: var(--white); border-left: 3px solid var(--amber); border-radius: 2px;
+  }
+  .big-fact em { font-style: normal; color: var(--amber); font-size: 1.35em; font-weight: 600; }
+
+  /* ── メカニズム ── */
+  .mech { list-style: none; padding: 0; margin: 2.5rem 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .mech li { background: var(--white); padding: 2rem 1.6rem; border-radius: 6px; border: 1px solid var(--line); }
+  .mech-step { font-family: var(--serif); font-size: .9rem; color: var(--amber); letter-spacing: .14em; }
+  .mech h3 { font-size: 1.05rem; margin: .5rem 0 .8rem; }
+  .mech p { font-size: .9rem; color: #46423d; margin: 0; }
+
+  .equation { text-align: center; margin: 2.5rem 0 0; padding: 2rem 1rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .equation p { margin: 0; color: var(--muted); }
+  .equation-out { font-family: var(--serif); font-size: clamp(1.2rem, 2.6vw, 1.7rem); color: var(--ink) !important; margin-top: .6rem !important; }
+  .equation-out em { font-style: normal; color: var(--amber); font-weight: 600; }
+
+  .specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin: 0; }
+  .spec { display: flex; gap: 1rem; padding: 1rem .2rem; border-top: 1px solid var(--line); }
+  .spec dt { font-weight: 700; font-size: .85rem; min-width: 8.5em; color: var(--accent); }
+  .spec dd { margin: 0; font-size: .9rem; }
+
+  /* ── 比較表 ── */
+  .table-scroll { overflow-x: auto; margin: 2rem 0 0; -webkit-overflow-scrolling: touch; }
+  .compare { border-collapse: collapse; width: 100%; min-width: 620px; background: var(--white); font-size: .88rem; }
+  .compare th, .compare td { padding: .85rem 1rem; border: 1px solid var(--line); text-align: center; }
+  .compare thead th { background: var(--bg-alt); font-size: .82rem; }
+  .compare tbody th { text-align: left; font-weight: 600; background: #fcfaf7; }
+  .compare .col-own { background: rgba(53, 83, 63, .07); font-weight: 700; color: var(--accent-dark); }
+  .compare thead .col-own { background: var(--accent); color: #fff; }
+
+  /* ── 物件カード ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+  .card { background: var(--white); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+  .card-body { padding: 1.3rem; display: flex; flex-direction: column; flex: 1; }
+  .tag { align-self: flex-start; font-size: .68rem; letter-spacing: .08em; background: var(--bg-alt); color: var(--muted); padding: .2em .7em; border-radius: 999px; margin-bottom: .6rem; }
+  .card h3 { font-size: 1.15rem; margin: 0 0 .2rem; }
+  .card-area { font-size: .78rem; color: var(--muted); margin: 0 0 .8rem; }
+  .card-price { font-family: var(--serif); font-size: 1.4rem; margin: 0; }
+  .card-monthly { font-size: .82rem; color: var(--amber); font-weight: 700; margin: .1rem 0 .8rem; }
+  .card-note { font-size: .82rem; color: #46423d; flex: 1; }
+
+  /* ── 動画 ── */
+  .tours { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.8rem; margin-top: 2rem; }
+  .tour { margin: 0; }
+  .tour-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #000; }
+  .tour-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .tour figcaption { font-size: .85rem; color: var(--muted); margin-top: .7rem; }
+
+  /* ── お客様の声 ── */
+  .voices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 2rem; }
+  .voice { margin: 0; background: var(--white); padding: 1.8rem; border-radius: 6px; border: 1px solid var(--line); }
+  .voice p { font-family: var(--serif); font-size: 1rem; line-height: 1.95; }
+  .voice footer { font-size: .78rem; color: var(--muted); display: flex; flex-direction: column; }
+  .voice footer strong { color: var(--ink); font-size: .85rem; }
+
+  /* ── FAQ ── */
+  .faq { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; padding: 1.1rem .2rem; font-weight: 700; font-size: .95rem; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "＋"; color: var(--accent); font-weight: 400; }
+  .faq[open] summary::after { content: "－"; }
+  .faq p { padding: 0 .2rem 1.2rem; margin: 0; font-size: .92rem; color: #46423d; }
+
+  /* ── 絞り込み ── */
+  .sec-narrow { background: var(--white); }
+
+  /* ── CVポイント ── */
+  .sec-reserve .kicker { color: #cfe3d6; }
+  .sec-reserve h2 { color: #fff; }
+  .after { list-style: none; padding: 0; margin: 0 0 2.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .after li { background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .18); border-radius: 6px; padding: 1.1rem; display: flex; flex-direction: column; gap: .2rem; }
+  .after-step { font-family: var(--serif); font-size: .8rem; color: #cfe3d6; letter-spacing: .1em; }
+  .after strong { font-size: .98rem; }
+  .after-body { font-size: .8rem; opacity: .85; line-height: 1.65; }
+
+  .form { background: var(--white); color: var(--ink); border-radius: 8px; padding: clamp(1.5rem, 4vw, 2.4rem); }
+  .hp { position: absolute; left: -9999px; }
+  .fs { border: none; padding: 0; margin: 0 0 1.6rem; }
+  .fs legend { font-size: .8rem; font-weight: 700; letter-spacing: .06em; padding: 0; margin-bottom: .7rem; }
+  .choices { display: grid; gap: .6rem; }
+  .choice { display: flex; align-items: flex-start; gap: .7rem; padding: .9rem 1rem; border: 1.5px solid var(--line); border-radius: 5px; cursor: pointer; transition: .15s; }
+  .choice:hover { border-color: var(--accent); }
+  .choice input { margin-top: .35rem; accent-color: var(--accent); flex: none; }
+  .choice span { display: flex; flex-direction: column; line-height: 1.5; }
+  .choice small { font-size: .74rem; color: var(--muted); }
+  .choice:has(input:checked) { border-color: var(--accent); background: rgba(53, 83, 63, .05); }
+
+  .f { display: block; margin-bottom: 1.1rem; }
+  .f-label { display: flex; align-items: center; gap: .5rem; font-size: .8rem; font-weight: 700; letter-spacing: .04em; margin-bottom: .35rem; }
+  .req { font-size: .62rem; font-weight: 700; background: var(--accent); color: #fff; padding: .15em .6em; border-radius: 2px; }
+  .opt { font-size: .62rem; font-weight: 700; background: var(--bg-alt); color: var(--muted); padding: .15em .6em; border-radius: 2px; }
+  .f input, .f select, .f textarea {
+    width: 100%; font-family: inherit; font-size: 1rem; color: var(--ink);
+    padding: .75rem .9rem; border: 1.5px solid var(--line); border-radius: 5px; background: #fff;
+  }
+  .f input:focus, .f select:focus, .f textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .f textarea { resize: vertical; }
+
+  .assure { font-size: .8rem; color: #46423d; background: var(--bg-alt); padding: .9rem 1.1rem; border-radius: 5px; line-height: 1.75; }
+  .assure strong { color: var(--accent-dark); }
+
+  .or { text-align: center; margin-top: 2rem; display: flex; flex-direction: column; gap: .2rem; }
+  .or span { font-size: .8rem; opacity: .8; }
+  .tel-big { font-family: var(--serif); font-size: clamp(1.5rem, 4vw, 2.1rem); color: #fff; text-decoration: none; letter-spacing: .02em; }
+  .or small { font-size: .72rem; opacity: .75; }
+
+  /* ── フッター ── */
+  .foot { background: var(--ink); color: #b9b3aa; padding: 2.5rem 0 6rem; font-size: .8rem; text-align: center; }
+  .foot p { margin: 0 0 .35rem; }
+  .foot-brand strong { font-family: var(--serif); letter-spacing: .16em; color: #fff; margin-right: .5rem; }
+  .foot-areas, .foot-license { font-size: .72rem; opacity: .75; }
+
+  /* ── スマホ追従CTA ── */
+  .sticky-cta { display: none; }
+
+  @media (max-width: 860px) {
+    .hero-in { grid-template-columns: 1fr; }
+    .hero-visual { order: -1; }
+    .ph-hero { aspect-ratio: 16 / 9; }
+    .hero { padding-top: 1.5rem; }
+    .proof-list { grid-template-columns: repeat(2, 1fr); gap: 1.2rem .8rem; }
+    .mech, .after, .tours, .voices, .specs { grid-template-columns: 1fr; }
+    .tel-hours { display: none; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    .tel { display: none; }
+    .hero-actions .btn { width: 100%; }
+    .sticky-cta {
+      display: grid; grid-template-columns: 1fr 1.4fr; gap: .6rem;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      padding: .7rem .8rem calc(.7rem + env(safe-area-inset-bottom));
+      background: rgba(251, 249, 245, .96); backdrop-filter: blur(8px);
+      border-top: 1px solid var(--line);
+    }
+    .sticky-cta .btn { background: #fff; }
+    .sticky-cta .btn-primary { background: var(--accent); }
+  }
+</style>
+
+</body>
+</html>
