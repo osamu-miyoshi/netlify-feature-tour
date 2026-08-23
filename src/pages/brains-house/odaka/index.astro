@@ -1,0 +1,503 @@
+---
+import {
+  property, hero, proofBar, location, mechanism, savingsLogic, specs,
+  units, unitsNote, outline, images, comparison, faqs, afterSubmit, company,
+} from "../../../data/brains-house-odaka";
+import BrainsImage from "../../../components/brains-image.astro";
+import "../../../styles/brains-lp.css";
+
+const title = `${property.fullName}｜${property.ward}・${property.station}の新築分譲住宅`;
+const description =
+  "名古屋市緑区大高の新築分譲住宅。大容量の太陽光発電とテスラ製蓄電池が標準装備で、光熱費はほとんどかかりません。ACTUSの家具はコーディネート済み。";
+const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
+---
+<!DOCTYPE html>
+<html lang="ja" data-v="a">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <script is:inline>
+    (function () {
+      var v = new URLSearchParams(location.search).get("v");
+      if (v === "b") document.documentElement.dataset.v = "b";
+    })();
+  </script>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="logo" href="/brains-house/odaka/">
+      <strong>BRAINS</strong><span>ブレインズの家 大高</span>
+    </a>
+    <div class="bar-cta">
+      <a class="tel" href={telHref}>
+        <span class="tel-num">{company.tel}</span>
+        <span class="tel-hours">{company.telHours}</span>
+      </a>
+      <a class="btn btn-primary btn-sm" href="#reserve">来場予約</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══ 要素4：ファーストビュー ─ ここで60%が決まる ═══ -->
+  <section class="hero">
+    <div class="hero-in">
+      <div class="hero-copy">
+        <p class="eyebrow">{hero.a.eyebrow}</p>
+
+        <h1 class="hero-h">
+          <span class="var-a">{hero.a.headline[0]}<br /><em>{hero.a.headline[1]}</em></span>
+          <span class="var-b">{hero.b.headline[0]}<br /><em>{hero.b.headline[1]}</em></span>
+        </h1>
+
+        <p class="hero-sub">
+          <span class="var-a">{hero.a.subhead}</span>
+          <span class="var-b">{hero.b.subhead}</span>
+        </p>
+
+        <!-- 物件LPでは、価格と立地をFV内で即答する。
+             探している人は「どこ・いくら」が分からないと読み進めてくれない。 -->
+        <dl class="hero-facts">
+          <div><dt>所在地</dt><dd>{property.ward}</dd></div>
+          <div><dt>交通</dt><dd>{property.station} {property.walkMinutes}</dd></div>
+          <div><dt>価格</dt><dd>{property.priceRange}</dd></div>
+          <div><dt>棟数</dt><dd>{property.units}</dd></div>
+        </dl>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="#reserve">現地を見学する（来場予約）</a>
+          <a class="btn btn-ghost btn-lg" href="#reserve">資料を受け取る</a>
+        </div>
+        <p class="hero-micro">入力は30秒ほど。しつこい営業はいたしません。</p>
+      </div>
+
+      <figure class="hero-visual">
+        <div class="var-a">
+          <BrainsImage src={images.hero.a.src} alt={images.hero.a.alt} note={images.hero.a.note} ratio="4 / 3" eager={true} />
+        </div>
+        <div class="var-b">
+          <BrainsImage src={images.hero.b.src} alt={images.hero.b.alt} note={images.hero.b.note} ratio="4 / 3" eager={true} />
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ═══ 要素5：社会的証明を早めに置く ═══ -->
+  <section class="proof">
+    <ul class="proof-list">
+      {proofBar.map((p) => (
+        <li><strong>{p.value}</strong><span>{p.label}</span></li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- ═══ 新PASONA ─ P：問題提起（煽らず、事実を置く）═══ -->
+  <section class="sec sec-problem">
+    <div class="wrap narrow">
+      <p class="kicker">Problem</p>
+      <h2>名古屋市内で家を探すと、いつも予算が足りない。</h2>
+      <p>
+        緑区で新築を探しはじめると、たいていの方が同じ壁に当たります。
+        住みたいエリアの物件は予算を超え、予算に合う物件はエリアを諦めることになる。
+      </p>
+      <p>
+        このとき見落とされているのが、家を買ったあとに毎月出ていくお金です。
+        比べているのは建物の価格ですが、実際に払うのは住宅ローンと光熱費の合計だからです。
+      </p>
+      <p class="big-fact">
+        一般的な住宅の光熱費は <strong>{savingsLogic.monthlyUtility}</strong>。<br />
+        住宅ローンの借入に換算すると、<em>{savingsLogic.loanEquivalent}</em>にあたります。
+      </p>
+      <p>
+        光熱費のかからない家は、それだけで<strong>{savingsLogic.loanEquivalent}安い家</strong>と
+        同じ総支払額になります。<strong>同じ月々の支払いで、名古屋市内に住める</strong>ということです。
+      </p>
+      <p class="note">{savingsLogic.note}</p>
+    </div>
+  </section>
+
+  <!-- ═══ 新PASONA ─ A：親近感（Agitation＝煽りではなくAffinity）═══ -->
+  <section class="sec sec-affinity">
+    <div class="wrap narrow">
+      <p class="kicker">Affinity</p>
+      <h2>「エリアも性能も、どちらも譲りたくない」</h2>
+      <p>
+        私たちチタコーポレーションは1995年から、愛知で住まいのご相談をお受けしてきました。
+        土地探しも、賃貸も、売却も、注文住宅も、同じ会社でお受けしています。
+      </p>
+      <p>
+        そのなかで一番多くうかがってきたのが、この言葉です。通勤も子育ても考えると場所は譲れない。
+        でも、これから何十年も払い続ける家だから、性能も妥協したくない。打ち合わせを何十回も重ねる
+        時間はない。かといって、どこかで見たような家に住むのも気が進まない。
+      </p>
+      <p>
+        <strong>ブレインズの家は、その全部を同時に解こうとして生まれた分譲住宅です。</strong>
+        ACTUSのインテリアを扱う私たちBRAINSが、イシンホームの高性能住宅にACTUSの家具を
+        入れたところから、このブランドは始まりました。その大高です。
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 立地 ─ 物件LPの主役。「どこか」が分からなければ検討にすら乗らない ═══ -->
+  <section class="sec sec-location">
+    <div class="wrap">
+      <p class="kicker">Location</p>
+      <h2>{property.ward}大高という場所。</h2>
+      <p class="lead">{location.lead}</p>
+
+      <div class="loc-grid">
+        <ul class="loc-list">
+          {location.points.map((pt) => (
+            <li>
+              <h3>{pt.title}</h3>
+              <p>{pt.body}</p>
+            </li>
+          ))}
+        </ul>
+        <div class="loc-visual">
+          <BrainsImage src={images.location.src} alt={images.location.alt} note={images.location.note} ratio="4 / 3" />
+        </div>
+      </div>
+      <p class="note">{location.note}</p>
+    </div>
+  </section>
+
+  <!-- ═══ 新PASONA ─ S：解決策 ＋ O：オファー（メカニズム）═══ -->
+  <section class="sec sec-solution">
+    <div class="wrap">
+      <p class="kicker">Solution &amp; Offer</p>
+      <h2>なぜ、光熱費がほとんどかからないのか。</h2>
+      <p class="lead">「高性能だから」では説明になりません。仕組みは3つです。</p>
+
+      <ol class="mech">
+        {mechanism.map((m) => (
+          <li>
+            <span class="mech-step">{m.step}</span>
+            <h3>{m.title}</h3>
+            <p>{m.body}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="solution-shot">
+        <BrainsImage src={images.solution.src} alt={images.solution.alt} note={images.solution.note} ratio="21 / 9" />
+      </div>
+
+      <div class="equation">
+        <p>つくる量を増やし、貯めて夜に使い、逃がさない。</p>
+        <p class="equation-out">
+          だから、<em>{savingsLogic.loanEquivalent}</em>安い家と同じ総支払額になります。
+        </p>
+      </div>
+
+      <h3 class="sub-h">標準装備</h3>
+      <dl class="specs">
+        {specs.map((s) => (
+          <div class="spec"><dt>{s.label}</dt><dd>{s.value}</dd></div>
+        ))}
+      </dl>
+      <p class="note">オプションではありません。すべて標準装備です。あとから足す費用はかかりません。</p>
+    </div>
+  </section>
+
+  <!-- ═══ 差別化 ─ 項目別で示す ═══ -->
+  <section class="sec sec-compare">
+    <div class="wrap">
+      <p class="kicker">Difference</p>
+      <h2>他の家と、何がどう違うのか。</h2>
+      <p class="lead">「品質が高い」「丁寧」ではなく、項目で比べてください。</p>
+
+      <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr>
+              <th scope="col">項目</th>
+              {comparison.columns.map((c, i) => (
+                <th scope="col" class={i === 0 ? "col-own" : ""}>{c}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.rows.map((r) => (
+              <tr>
+                <th scope="row">{r.item}</th>
+                {r.values.map((v, i) => (
+                  <td class={i === 0 ? "col-own" : ""}>{v}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        比較内容は一般的な仕様の傾向をまとめたものです。各社の実際の仕様とは異なる場合があります。
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 室内ギャラリー ═══ -->
+  <section class="sec sec-gallery">
+    <div class="wrap">
+      <p class="kicker">Interior</p>
+      <h2>家具まで、決まっています。</h2>
+      <p class="lead">
+        引っ越してから家具を探す必要はありません。ACTUSのコーディネーターが、
+        この家に合わせて選んだ状態でお引き渡しします。
+      </p>
+      <div class="gallery">
+        {images.gallery.map((g) => (
+          <figure class="shot">
+            <BrainsImage src={g.src} alt={g.alt} note={g.note} ratio="4 / 3" />
+            <figcaption>{g.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 区画ラインナップ ═══ -->
+  <section class="sec sec-units">
+    <div class="wrap">
+      <p class="kicker">Plan</p>
+      <h2>販売中の区画</h2>
+
+      <div class="cards">
+        {units.map((u) => (
+          <article class="card">
+            <BrainsImage src={u.image.src} alt={u.image.alt} note={u.image.note} ratio="16 / 10" className="card-img" />
+            <div class="card-body">
+              <span class="tag">{u.status}</span>
+              <h3>{u.no}</h3>
+              <p class="card-price">{u.price}</p>
+              <dl class="unit-spec">
+                <div><dt>間取り</dt><dd>{u.layout}</dd></div>
+                <div><dt>土地</dt><dd>{u.land}</dd></div>
+                <div><dt>建物</dt><dd>{u.building}</dd></div>
+              </dl>
+              {u.note && <p class="card-note">{u.note}</p>}
+              <a class="btn btn-ghost btn-block" href="#reserve">この区画を見学する</a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="note">{unitsNote}</p>
+    </div>
+  </section>
+
+  <!-- ═══ 新PASONA ─ N：絞り込み（架空の締切は作らない）═══ -->
+  <section class="sec sec-narrow">
+    <div class="wrap narrow">
+      <p class="kicker">Narrow down</p>
+      <h2>大高の区画は、{property.units}です。</h2>
+      <p>
+        分譲住宅は、一軒ごとに土地も間取りもデザインも違います。だから、
+        <strong>気に入った一軒に住めるのは1組だけ</strong>です。
+      </p>
+      <p>
+        急かすつもりはありません。ただ、名古屋市内でこの条件の区画がまとまって出ることは
+        そう多くありません。見てから考えるほうが、後悔は少ないはずです。
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ─ 出口の手前で不安を潰す ═══ -->
+  <section class="sec sec-faq">
+    <div class="wrap narrow">
+      <p class="kicker">FAQ</p>
+      <h2>ご不安な点</h2>
+      {faqs.map((f) => (
+        <details class="faq">
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══ 要素4：コンバージョンポイント ─ ここで20%が決まる ═══ -->
+  <section class="sec sec-reserve" id="reserve">
+    <div class="wrap narrow">
+      <p class="kicker">Action</p>
+      <h2>30秒で、来場予約。</h2>
+
+      <ol class="after">
+        {afterSubmit.map((a) => (
+          <li>
+            <span class="after-step">{a.step}</span>
+            <strong>{a.label}</strong>
+            <span class="after-body">{a.body}</span>
+          </li>
+        ))}
+      </ol>
+
+      <form
+        class="form"
+        name="brains-odaka-reserve"
+        method="POST"
+        action="/brains-house/thanks"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="brains-odaka-reserve" />
+        <input type="hidden" name="物件" value="ブレインズの家 大高" />
+        <input type="hidden" name="variant" id="variant-field" value="a" />
+        <p class="hp"><label>この欄は入力しないでください <input name="bot-field" /></label></p>
+
+        <fieldset class="fs">
+          <legend>ご希望をお選びください</legend>
+          <div class="choices">
+            <label class="choice">
+              <input type="radio" name="希望" value="来場予約" checked />
+              <span><strong>現地を見学したい</strong><small>所要約60分</small></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="希望" value="資料請求" />
+              <span><strong>まず資料を見たい</strong><small>区画図・価格・標準仕様</small></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="希望" value="相談" />
+              <span><strong>相談だけしたい</strong><small>予算・ローン・住み替え</small></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <label class="f">
+          <span class="f-label">お名前 <b class="req">必須</b></span>
+          <input type="text" name="お名前" required autocomplete="name" placeholder="名古屋 太郎" />
+        </label>
+
+        <label class="f">
+          <span class="f-label">お電話番号 <b class="req">必須</b></span>
+          <input type="tel" name="電話番号" required autocomplete="tel" inputmode="tel" placeholder="09000000000" />
+        </label>
+
+        <label class="f">
+          <span class="f-label">メールアドレス <b class="opt">任意</b></span>
+          <input type="email" name="メールアドレス" autocomplete="email" placeholder="example@example.com" />
+        </label>
+
+        <label class="f">
+          <span class="f-label">気になっている区画 <b class="opt">任意</b></span>
+          <select name="気になっている区画">
+            <option value="">選択しない（おまかせ）</option>
+            {units.map((u) => (<option value={u.no}>{u.no}</option>))}
+          </select>
+        </label>
+
+        <label class="f">
+          <span class="f-label">ご希望の日程 <b class="opt">任意</b></span>
+          <input type="text" name="希望日程" placeholder="例）今週末の午後、平日の夕方 など" />
+        </label>
+
+        <label class="f">
+          <span class="f-label">ご質問・ご要望 <b class="opt">任意</b></span>
+          <textarea name="ご要望" rows="3" placeholder="ローンのこと、今のお住まいの売却のことなど"></textarea>
+        </label>
+
+        <p class="assure">
+          いただいた内容は物件のご案内以外には使用しません。<br />
+          <strong>その場での契約のお話や、しつこいご連絡はいたしません。</strong>
+        </p>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block">この内容で送信する</button>
+      </form>
+
+      <div class="or">
+        <span>お電話でも承ります</span>
+        <a class="tel-big" href={telHref}>{company.tel}</a>
+        <small>{company.telHours}</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 物件概要（宅建業法上の表示事項）═══ -->
+  <section class="sec sec-outline">
+    <div class="wrap narrow">
+      <p class="kicker">Outline</p>
+      <h2>物件概要</h2>
+      <dl class="outline">
+        {outline.map((o) => (
+          <div class="outline-row"><dt>{o.label}</dt><dd>{o.value}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="foot-brand"><strong>BRAINS</strong> ブレインズの家 大高</p>
+    <p>{company.name}</p>
+    <p class="foot-license">宅地建物取引業免許　{company.license}</p>
+    <p class="foot-areas"><a href="/brains-house/">ブレインズの家（半田・知多・阿久比）はこちら</a></p>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <a class="btn btn-ghost" href={telHref}>電話する</a>
+  <a class="btn btn-primary" href="#reserve">来場予約</a>
+</div>
+
+<script is:inline>
+  (function () {
+    var f = document.getElementById("variant-field");
+    if (f) f.value = document.documentElement.dataset.v || "a";
+  })();
+</script>
+
+<style is:global>
+  /* 大高LP固有のスタイル。共通分は src/styles/brains-lp.css */
+
+  /* FV内の物件ファクト。探している人は「どこ・いくら」を先に知りたい。 */
+  .hero-facts {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: .1rem 1.5rem; margin: 0 0 1.8rem;
+    padding: 1.1rem 1.3rem; background: var(--white);
+    border: 1px solid var(--line); border-radius: 6px;
+  }
+  .hero-facts > div { display: flex; gap: .8rem; align-items: baseline; padding: .3rem 0; }
+  .hero-facts dt { font-size: .72rem; color: var(--muted); min-width: 3.5em; flex: none; letter-spacing: .06em; }
+  .hero-facts dd { margin: 0; font-size: .88rem; font-weight: 700; }
+
+  /* 立地 */
+  .sec-location { background: var(--white); }
+  .loc-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 2.5rem; align-items: start; margin-top: 2rem; }
+  .loc-list { list-style: none; padding: 0; margin: 0; }
+  .loc-list li { padding: 1.2rem 0; border-top: 1px solid var(--line); }
+  .loc-list li:last-child { border-bottom: 1px solid var(--line); }
+  .loc-list h3 { font-size: 1rem; margin: 0 0 .4rem; color: var(--accent-dark); }
+  .loc-list p { font-size: .88rem; color: #46423d; margin: 0; }
+
+  /* 区画カード */
+  .unit-spec { margin: .6rem 0 1rem; }
+  .unit-spec > div { display: flex; gap: .8rem; padding: .3rem 0; border-top: 1px solid var(--line); font-size: .8rem; }
+  .unit-spec dt { color: var(--muted); min-width: 4em; flex: none; }
+  .unit-spec dd { margin: 0; }
+
+  /* 物件概要 */
+  .sec-outline { background: var(--bg-alt); }
+  .outline { margin: 2rem 0 0; }
+  .outline-row { display: flex; gap: 1.2rem; padding: .8rem .2rem; border-top: 1px solid var(--line); font-size: .85rem; }
+  .outline-row:last-child { border-bottom: 1px solid var(--line); }
+  .outline dt { min-width: 9em; flex: none; color: var(--accent); font-weight: 700; }
+  .outline dd { margin: 0; }
+
+  @media (max-width: 860px) {
+    .loc-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .loc-visual { order: -1; }
+    .hero-facts { grid-template-columns: 1fr; }
+  }
+</style>
+
+</body>
+</html>
