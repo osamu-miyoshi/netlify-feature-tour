@@ -177,7 +177,7 @@ export const outline = [
   { label: "設備", value: `${TODO_CONFIRM}公営水道・本下水・都市ガス` },
   { label: "完成時期", value: `${TODO_CONFIRM}0000年0月` },
   { label: "引渡時期", value: `${TODO_CONFIRM}相談` },
-  { label: "取引態様", value: `${TODO_CONFIRM}売主` },
+  { label: "取引態様", value: "売主" },
 ];
 
 /* ────────────────────────────────────────────
@@ -268,7 +268,9 @@ export const afterSubmit = [
 
 export const company = {
   name: "株式会社チタコーポレーション",
+  /** 本店所在地（宅建業者としての表示）。物件の所在地とは別。 */
+  address: "愛知県半田市昭和町1-15-1",
   tel: `${TODO_CONFIRM}0569-00-0000`,
   telHours: `${TODO_CONFIRM}9:00〜18:00 / 水曜定休`,
-  license: `${TODO_CONFIRM}愛知県知事(0)第00000号`,
+  license: "愛知県知事（７）17759号",
 };
