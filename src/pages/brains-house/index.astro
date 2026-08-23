@@ -2,7 +2,9 @@
 import {
   company, hero, proofBar, mechanism, savingsLogic, comparison,
   specs, properties, propertiesNote, roomTours, voices, faqs, afterSubmit,
+  images,
 } from "../../data/brains-house";
+import BrainsImage from "../../components/brains-image.astro";
 
 const title = "ブレインズの家｜半田・知多・阿久比の新築分譲住宅";
 const description =
@@ -81,10 +83,23 @@ const description =
       </div>
 
       <figure class="hero-visual">
-        <div class="ph ph-hero">
-          <span class="var-a">{hero.a.visualNote}</span>
-          <span class="var-b">{hero.b.visualNote}</span>
-          <small>写真を差し替えてください</small>
+        <div class="var-a">
+          <BrainsImage
+            src={images.hero.a.src}
+            alt={images.hero.a.alt}
+            note={images.hero.a.note}
+            ratio="4 / 3"
+            eager={true}
+          />
+        </div>
+        <div class="var-b">
+          <BrainsImage
+            src={images.hero.b.src}
+            alt={images.hero.b.alt}
+            note={images.hero.b.note}
+            ratio="4 / 3"
+            eager={true}
+          />
         </div>
       </figure>
     </div>
@@ -168,6 +183,15 @@ const description =
         ))}
       </ol>
 
+      <div class="solution-shot">
+        <BrainsImage
+          src={images.solution.src}
+          alt={images.solution.alt}
+          note={images.solution.note}
+          ratio="21 / 9"
+        />
+      </div>
+
       <div class="equation">
         <p>つくる量を増やし、貯めて夜に使い、逃がさない。</p>
         <p class="equation-out">
@@ -225,6 +249,27 @@ const description =
     </div>
   </section>
 
+  <!-- ═══════ 室内ギャラリー
+       ACTUSコーディネートは、言葉より写真で伝わる。差別化の裏づけ。 ═══════ -->
+  <section class="sec sec-gallery">
+    <div class="wrap">
+      <p class="kicker">Interior</p>
+      <h2>家具まで、決まっています。</h2>
+      <p class="lead">
+        引っ越してから家具を探す必要はありません。ACTUSのコーディネーターが、
+        この家に合わせて選んだ状態でお引き渡しします。
+      </p>
+      <div class="gallery">
+        {images.gallery.map((g) => (
+          <figure class="shot">
+            <BrainsImage src={g.src} alt={g.alt} note={g.note} ratio="4 / 3" />
+            <figcaption>{g.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- ═══════ 物件ラインナップ ═══════ -->
   <section class="sec sec-properties">
     <div class="wrap">
@@ -234,7 +279,13 @@ const description =
       <div class="cards">
         {properties.map((p) => (
           <article class="card">
-            <div class="ph ph-card"><small>外観写真</small></div>
+            <BrainsImage
+              src={p.image.src}
+              alt={p.image.alt}
+              note={p.image.note}
+              ratio="16 / 10"
+              className="card-img"
+            />
             <div class="card-body">
               {p.tag && <span class="tag">{p.tag}</span>}
               <h3>{p.name}</h3>
@@ -620,9 +671,17 @@ const description =
   .compare .col-own { background: rgba(53, 83, 63, .07); font-weight: 700; color: var(--accent-dark); }
   .compare thead .col-own { background: var(--accent); color: #fff; }
 
+  /* ── 室内ギャラリー ── */
+  .sec-gallery { background: var(--white); }
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2rem; }
+  .shot { margin: 0; }
+  .shot figcaption { font-size: .78rem; color: var(--muted); margin-top: .5rem; }
+  .solution-shot { margin: 2.5rem 0 0; }
+
   /* ── 物件カード ── */
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
   .card { background: var(--white); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+  .card .card-img, .card .ph { border-radius: 0; border: none; border-bottom: 1px solid var(--line); }
   .card-body { padding: 1.3rem; display: flex; flex-direction: column; flex: 1; }
   .tag { align-self: flex-start; font-size: .68rem; letter-spacing: .08em; background: var(--bg-alt); color: var(--muted); padding: .2em .7em; border-radius: 999px; margin-bottom: .6rem; }
   .card h3 { font-size: 1.15rem; margin: 0 0 .2rem; }
@@ -712,6 +771,7 @@ const description =
     .hero { padding-top: 1.5rem; }
     .proof-list { grid-template-columns: repeat(2, 1fr); gap: 1.2rem .8rem; }
     .mech, .after, .tours, .voices, .specs { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: repeat(2, 1fr); gap: .8rem; }
     .tel-hours { display: none; }
   }
   @media (max-width: 640px) {

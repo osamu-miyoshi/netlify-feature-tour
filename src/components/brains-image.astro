@@ -1,0 +1,42 @@
+---
+/**
+ * LP用の画像スロット。
+ * src が入っていれば <img> を、未設定ならプレースホルダを出す。
+ * 写真が揃うまでレイアウトを崩さずに開発を進めるための仕組み。
+ */
+const {
+  src,           // 例: "/images/brains/web260821-33.jpg"
+  alt = "",
+  note = "",     // プレースホルダに出す「どんな写真を入れるか」の指示
+  ratio = "4 / 3",
+  eager = false, // ファーストビューの画像だけ true（表示速度が離脱率に直結するため）
+  className = "",
+} = Astro.props;
+---
+{src ? (
+  <img
+    class={`slot-img ${className}`}
+    src={src}
+    alt={alt}
+    style={`aspect-ratio: ${ratio};`}
+    loading={eager ? "eager" : "lazy"}
+    decoding={eager ? "sync" : "async"}
+    fetchpriority={eager ? "high" : "auto"}
+  />
+) : (
+  <div class={`ph ${className}`} style={`aspect-ratio: ${ratio};`}>
+    <span>{note}</span>
+    <small>写真を差し替えてください</small>
+  </div>
+)}
+
+<style is:global>
+  .slot-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #efeae1;
+  }
+</style>
