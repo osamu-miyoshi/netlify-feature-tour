@@ -169,6 +169,16 @@ export const specs = [
    ──────────────────────────────────────────── */
 export const properties = [
   {
+    /** 260821撮影の新規分譲物件。情報が届き次第、下の［要確認］を埋めてください。 */
+    name: `${TODO_CONFIRM}物件名`,
+    area: `${TODO_CONFIRM}所在地`,
+    price: `${TODO_CONFIRM}0,000万円`,
+    monthly: `${TODO_CONFIRM}月々実質 0.0万円`,
+    tag: "NEW",
+    note: `${TODO_CONFIRM}この家ならではの一文（例：家事動線を短くした3LDK）`,
+    image: { src: "", alt: "ブレインズの家 新規分譲物件の外観", note: "外観写真（260821撮影）" },
+  },
+  {
     name: "中島Ⅲ",
     area: "半田市中島町",
     price: "3,760万円",
