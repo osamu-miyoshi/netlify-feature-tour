@@ -292,14 +292,13 @@ export const outlineNote =
    ──────────────────────────────────────────── */
 export const images = {
   hero: {
-    // 受領済みの写真から割り当て済み。ZIP等でファイルが届き次第 src を埋める。
     a: {
-      src: "",
+      src: "/images/brains-odaka/hero-courtyard.jpg",
       alt: "イシンプレミアム大高の中庭。ウッドデッキがL字に回り、中央にモミジ。",
       note: "A案：中庭を外から見た一枚（青空・L字ウッドデッキ・モミジ）",
     },
     b: {
-      src: "",
+      src: "/images/brains-odaka/hero-courtyard-in.jpg",
       alt: "リビングの大開口越しに見る中庭とウッドデッキ",
       note: "B案：中庭を室内から見た一枚（大開口越し・ベンチ・シンボルツリー）",
     },
@@ -315,43 +314,43 @@ export const images = {
     note: "間取り図",
   },
   location: {
-    src: "",
+    src: "/images/brains-odaka/exterior.jpg",
     alt: "イシンプレミアム大高の外観。手前にコンクリートの駐車スペースと砂利敷き。",
     note: "外観：道路側から見た平屋全景（駐車スペース・アプローチ・周囲の街並みが写ったもの）",
   },
   gallery: [
     {
-      src: "",
+      src: "/images/brains-odaka/living.jpg",
       alt: "リビング。黒のアクセントウォールに、大開口から中庭の緑。",
       note: "リビング（グレーのソファ・黒い壁・大開口）",
       caption: "リビング",
     },
     {
-      src: "",
+      src: "/images/brains-odaka/dining.jpg",
       alt: "ダイニングから中庭を見る。ペンダントライトとダイニングテーブル。",
       note: "ダイニング＋中庭（ペンダントライト・大開口）",
       caption: "ダイニング",
     },
     {
-      src: "",
+      src: "/images/brains-odaka/kitchen.jpg",
       alt: "黒いアイランドキッチン。中庭に面し、奥にダイニングが続く。",
       note: "キッチン（黒のアイランド・中庭に面した窓）",
       caption: "キッチン",
     },
     {
-      src: "",
+      src: "/images/brains-odaka/laundry.jpg",
       alt: "ランドリールーム。室内干しのバーと収納棚。",
       note: "ランドリー／ファミリークローゼット（室内干しバー・収納棚）",
       caption: "洗って、しまう",
     },
     {
-      src: "",
+      src: "/images/brains-odaka/washroom.jpg",
       alt: "洗面所。三面鏡と、モルタル調のカウンター。",
       note: "洗面所（三面鏡・モルタル調カウンター）",
       caption: "洗面",
     },
     {
-      src: "",
+      src: "/images/brains-odaka/doma.jpg",
       alt: "土間収納。可動棚に靴を並べ、奥はクローゼットへ続く。",
       note: "土間収納／シューズインクローク（可動棚・黒タイル）",
       caption: "土間収納",

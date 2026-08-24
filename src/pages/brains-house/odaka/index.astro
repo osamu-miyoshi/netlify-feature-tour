@@ -87,7 +87,8 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
           <BrainsImage src={images.hero.a.src} alt={images.hero.a.alt} note={images.hero.a.note} ratio="4 / 3" eager={true} />
         </div>
         <div class="var-b">
-          <BrainsImage src={images.hero.b.src} alt={images.hero.b.alt} note={images.hero.b.note} ratio="4 / 3" eager={true} />
+          {/* B案は既定では非表示。eager にすると A案しか見ない人にも余計に読み込まれるので lazy にする。 */}
+          <BrainsImage src={images.hero.b.src} alt={images.hero.b.alt} note={images.hero.b.note} ratio="4 / 3" />
         </div>
       </figure>
     </div>
