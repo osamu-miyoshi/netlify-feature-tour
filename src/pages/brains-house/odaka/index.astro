@@ -1,7 +1,8 @@
 ---
 import {
   property, monthly, hero, proofBar, location, mechanism, specGroups,
-  planPoints, comparison, outline, outlineNote, images, faqs, afterSubmit, company,
+  techProofs, techNote, planPoints, comparison, outline, outlineNote,
+  images, faqs, afterSubmit, company,
 } from "../../../data/brains-house-odaka";
 import BrainsImage from "../../../components/brains-image.astro";
 import "../../../styles/brains-lp.css";
@@ -219,7 +220,7 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
 
       <div class="plan-grid">
         <div class="plan-visual">
-          <BrainsImage src={images.plan.src} alt={images.plan.alt} note={images.plan.note} ratio="4 / 3" />
+          <BrainsImage src={images.plan.src} alt={images.plan.alt} note={images.plan.note} ratio="438 / 797" className="plan-img" />
         </div>
         <ul class="plan-list">
           {planPoints.map((pt) => (
@@ -266,6 +267,32 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+
+  <!-- ═══ 設備の裏づけ ─ メーカー資料。数値の出典を必ず明示する ═══ -->
+  <section class="sec sec-tech">
+    <div class="wrap">
+      <p class="kicker">Technology</p>
+      <h2>「標準装備」の中身。</h2>
+      <p class="lead">名前を並べるだけでは伝わりません。何がどう効くのかを見てください。</p>
+
+      <div class="tech-list">
+        {techProofs.map((t) => (
+          <article class="tech">
+            <div class="tech-visual">
+              <img src={t.image.src} alt={t.image.alt} loading="lazy" decoding="async" />
+            </div>
+            <div class="tech-body">
+              <h3>{t.title}</h3>
+              <p class="tech-maker">{t.maker}</p>
+              <p>{t.body}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="note">{techNote}</p>
     </div>
   </section>
 
@@ -540,6 +567,23 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
   .fac li { font-size: .85rem; padding: .4rem 0; border-top: 1px solid var(--line); }
   .fac li:first-child { border-top: none; }
 
+  /* 間取り図は縦長。枠いっぱいに引き伸ばさない */
+  .plan-img { max-width: 420px; margin: 0 auto; background: var(--white); border: 1px solid var(--line); }
+
+  /* 設備の裏づけ */
+  .sec-tech { background: var(--white); }
+  .tech-list { display: grid; gap: 1.2rem; margin-top: 2rem; }
+  .tech {
+    display: grid; grid-template-columns: 300px 1fr; gap: 1.8rem; align-items: center;
+    background: var(--bg-alt); border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+  }
+  .tech-visual { background: var(--white); }
+  .tech-visual img { display: block; width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4 / 3; }
+  .tech-body { padding: 1.4rem 1.8rem 1.4rem 0; }
+  .tech-body h3 { font-size: 1.05rem; margin: 0 0 .2rem; color: var(--accent-dark); }
+  .tech-maker { font-size: .7rem; color: var(--muted); letter-spacing: .06em; margin: 0 0 .7rem; }
+  .tech-body p { font-size: .88rem; color: #46423d; margin: 0; }
+
   /* 立地 */
   .sec-location { background: var(--white); }
   .loc-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 2.5rem; align-items: start; margin-top: 2rem; }
@@ -562,6 +606,8 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
     .plan-visual, .loc-visual { order: -1; }
     .hero-facts { grid-template-columns: 1fr; }
     .fac-grid { grid-template-columns: 1fr; }
+    .tech { grid-template-columns: 1fr; }
+    .tech-body { padding: 1.2rem 1.4rem 1.5rem; }
     .outline-row { flex-direction: column; gap: .2rem; }
     .outline dt { min-width: 0; }
   }
