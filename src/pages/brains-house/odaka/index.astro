@@ -1,14 +1,14 @@
 ---
 import {
-  property, hero, proofBar, location, mechanism, savingsLogic, specs,
-  units, unitsNote, outline, images, comparison, faqs, afterSubmit, company,
+  property, monthly, hero, proofBar, location, mechanism, specGroups,
+  planPoints, comparison, outline, outlineNote, images, faqs, afterSubmit, company,
 } from "../../../data/brains-house-odaka";
 import BrainsImage from "../../../components/brains-image.astro";
 import "../../../styles/brains-lp.css";
 
-const title = `${property.fullName}｜${property.ward}・${property.station}の新築分譲住宅`;
+const title = `${property.fullName}｜${property.address}の平屋モデルハウス`;
 const description =
-  "名古屋市緑区大高の新築分譲住宅。大容量の太陽光発電とテスラ製蓄電池が標準装備で、光熱費はほとんどかかりません。ACTUSの家具はコーディネート済み。";
+  "愛知県半田市大高町の平屋モデルハウス。土地109坪、中庭とウッドデッキ、駐車場8台。太陽光16.8kW搭載のZEH住宅、耐震等級3。6,160万円（税込）、2026年9月完成。";
 const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
 ---
 <!DOCTYPE html>
@@ -34,14 +34,14 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
 <header class="bar">
   <div class="bar-in">
     <a class="logo" href="/brains-house/odaka/">
-      <strong>BRAINS</strong><span>ブレインズの家 大高</span>
+      <strong>BRAINS</strong><span>イシンプレミアム大高</span>
     </a>
     <div class="bar-cta">
       <a class="tel" href={telHref}>
         <span class="tel-num">{company.tel}</span>
         <span class="tel-hours">{company.telHours}</span>
       </a>
-      <a class="btn btn-primary btn-sm" href="#reserve">来場予約</a>
+      <a class="btn btn-primary btn-sm" href="#reserve">見学予約</a>
     </div>
   </div>
 </header>
@@ -64,18 +64,19 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
           <span class="var-b">{hero.b.subhead}</span>
         </p>
 
-        <!-- 物件LPでは、価格と立地をFV内で即答する。
-             探している人は「どこ・いくら」が分からないと読み進めてくれない。 -->
+        <!-- 物件を探している人は「どこ・いくら・どんな家」が分からないと読み進めてくれない -->
         <dl class="hero-facts">
-          <div><dt>所在地</dt><dd>{property.ward}</dd></div>
-          <div><dt>交通</dt><dd>{property.station} {property.walkMinutes}</dd></div>
-          <div><dt>価格</dt><dd>{property.priceRange}</dd></div>
-          <div><dt>棟数</dt><dd>{property.units}</dd></div>
+          <div><dt>価格</dt><dd>{property.price}<small>{property.priceNote}</small></dd></div>
+          <div><dt>間取り</dt><dd>{property.layout}</dd></div>
+          <div><dt>土地</dt><dd>{property.land}</dd></div>
+          <div><dt>建物</dt><dd>{property.building}</dd></div>
+          <div><dt>所在地</dt><dd>{property.address}</dd></div>
+          <div><dt>完成</dt><dd>{property.completion}</dd></div>
         </dl>
 
         <div class="hero-actions">
-          <a class="btn btn-primary btn-lg" href="#reserve">現地を見学する（来場予約）</a>
-          <a class="btn btn-ghost btn-lg" href="#reserve">資料を受け取る</a>
+          <a class="btn btn-primary btn-lg" href="#reserve">見学を予約する</a>
+          <a class="btn btn-ghost btn-lg" href="#monthly">月々の支払いを見る</a>
         </div>
         <p class="hero-micro">入力は30秒ほど。しつこい営業はいたしません。</p>
       </div>
@@ -100,74 +101,82 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
     </ul>
   </section>
 
+  <!-- ═══════════════════════════════════════════════
+       月々のお支払い ─ このLPの背骨
+       合計額だけを単独で見せない。内訳と試算条件を必ず同じ画面に置く。
+       売電収入と減税を差し引いた数字は、内訳を隠すと優良誤認になる。
+       ═══════════════════════════════════════════════ -->
+  <section class="sec sec-monthly" id="monthly">
+    <div class="wrap narrow">
+      <p class="kicker">Monthly payment</p>
+      <h2>6,160万円の平屋の、月々。</h2>
+      <p class="lead">
+        16.8kWの太陽光が毎月電気を生みます。売電収入と住宅ローン減税を差し引くと、
+        月々のお支払いはこうなります。
+      </p>
+
+      <div class="pay">
+        <ul class="pay-rows">
+          {monthly.rows.map((r) => (
+            <li class={r.sign}>
+              <span class="pay-label">{r.label}</span>
+              <span class="pay-value">
+                {r.sign === "minus" ? "−" : "＋"}{r.value}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div class="pay-total">
+          <span class="pay-total-label">月々の合計</span>
+          <strong class="pay-total-value">{monthly.total}</strong>
+        </div>
+        <p class="pay-cond">試算条件：{monthly.conditions}</p>
+      </div>
+
+      <p class="note">{monthly.disclaimer}</p>
+    </div>
+  </section>
+
   <!-- ═══ 新PASONA ─ P：問題提起（煽らず、事実を置く）═══ -->
   <section class="sec sec-problem">
     <div class="wrap narrow">
       <p class="kicker">Problem</p>
-      <h2>名古屋市内で家を探すと、いつも予算が足りない。</h2>
+      <h2>広い平屋は、高いから諦める。</h2>
       <p>
-        緑区で新築を探しはじめると、たいていの方が同じ壁に当たります。
-        住みたいエリアの物件は予算を超え、予算に合う物件はエリアを諦めることになる。
-      </p>
-      <p>
-        このとき見落とされているのが、家を買ったあとに毎月出ていくお金です。
-        比べているのは建物の価格ですが、実際に払うのは住宅ローンと光熱費の合計だからです。
-      </p>
-      <p class="big-fact">
-        一般的な住宅の光熱費は <strong>{savingsLogic.monthlyUtility}</strong>。<br />
-        住宅ローンの借入に換算すると、<em>{savingsLogic.loanEquivalent}</em>にあたります。
+        平屋がいい。庭がほしい。車も何台か置きたい。
+        そう思って探しはじめても、たいていは価格を見て諦めることになります。
       </p>
       <p>
-        光熱費のかからない家は、それだけで<strong>{savingsLogic.loanEquivalent}安い家</strong>と
-        同じ総支払額になります。<strong>同じ月々の支払いで、名古屋市内に住める</strong>ということです。
+        平屋は同じ床面積でも土地を多く使うぶん、二階建てより高くなります。
+        109坪の敷地となれば、なおさらです。
       </p>
-      <p class="note">{savingsLogic.note}</p>
+      <p>
+        けれど、比べるべきは物件価格ではなく、<strong>毎月いくら出ていくか</strong>です。
+        住宅ローンと光熱費を払い、太陽光が電気を生む。その差引きで見たとき、
+        この家の月々は<strong>{monthly.total}</strong>になります。
+      </p>
     </div>
   </section>
 
-  <!-- ═══ 新PASONA ─ A：親近感（Agitation＝煽りではなくAffinity）═══ -->
+  <!-- ═══ 新PASONA ─ A：親近感（煽りではなく共感）═══ -->
   <section class="sec sec-affinity">
     <div class="wrap narrow">
       <p class="kicker">Affinity</p>
-      <h2>「エリアも性能も、どちらも譲りたくない」</h2>
+      <h2>「妥協した家に、30年住みたくない」</h2>
       <p>
-        私たちチタコーポレーションは1995年から、愛知で住まいのご相談をお受けしてきました。
-        土地探しも、賃貸も、売却も、注文住宅も、同じ会社でお受けしています。
+        私たちチタコーポレーションは1995年から、半田を中心に愛知で住まいのご相談を
+        お受けしてきました。土地探しも、賃貸も、売却も、注文住宅も、同じ会社でお受けしています。
       </p>
       <p>
-        そのなかで一番多くうかがってきたのが、この言葉です。通勤も子育ても考えると場所は譲れない。
-        でも、これから何十年も払い続ける家だから、性能も妥協したくない。打ち合わせを何十回も重ねる
-        時間はない。かといって、どこかで見たような家に住むのも気が進まない。
+        そのなかで、家を建て終えた方から何度もうかがってきた言葉があります。
+        「あのとき、もう少しだけ広くしておけばよかった」。
+        逆に、広さを取って後悔したという話は、ほとんど聞きません。
       </p>
       <p>
-        <strong>ブレインズの家は、その全部を同時に解こうとして生まれた分譲住宅です。</strong>
-        ACTUSのインテリアを扱う私たちBRAINSが、イシンホームの高性能住宅にACTUSの家具を
-        入れたところから、このブランドは始まりました。その大高です。
+        <strong>この家は、その「もう少し」を最初から入れてあります。</strong>
+        中庭、ウッドデッキ、土間収納、ファミリークローゼット、8台分の駐車場。
+        そして、それを月々{monthly.total}で持てるようにするための、16.8kWの太陽光です。
       </p>
-    </div>
-  </section>
-
-  <!-- ═══ 立地 ─ 物件LPの主役。「どこか」が分からなければ検討にすら乗らない ═══ -->
-  <section class="sec sec-location">
-    <div class="wrap">
-      <p class="kicker">Location</p>
-      <h2>{property.ward}大高という場所。</h2>
-      <p class="lead">{location.lead}</p>
-
-      <div class="loc-grid">
-        <ul class="loc-list">
-          {location.points.map((pt) => (
-            <li>
-              <h3>{pt.title}</h3>
-              <p>{pt.body}</p>
-            </li>
-          ))}
-        </ul>
-        <div class="loc-visual">
-          <BrainsImage src={images.location.src} alt={images.location.alt} note={images.location.note} ratio="4 / 3" />
-        </div>
-      </div>
-      <p class="note">{location.note}</p>
     </div>
   </section>
 
@@ -175,7 +184,7 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
   <section class="sec sec-solution">
     <div class="wrap">
       <p class="kicker">Solution &amp; Offer</p>
-      <h2>なぜ、光熱費がほとんどかからないのか。</h2>
+      <h2>なぜ、月々がこの金額になるのか。</h2>
       <p class="lead">「高性能だから」では説明になりません。仕組みは3つです。</p>
 
       <ol class="mech">
@@ -193,19 +202,70 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
       </div>
 
       <div class="equation">
-        <p>つくる量を増やし、貯めて夜に使い、逃がさない。</p>
+        <p>大きくつくって売り、昼に沸かし、逃がさない。</p>
         <p class="equation-out">
-          だから、<em>{savingsLogic.loanEquivalent}</em>安い家と同じ総支払額になります。
+          だから、6,160万円の平屋が月々<em>{monthly.total}</em>になります。
         </p>
       </div>
+    </div>
+  </section>
 
-      <h3 class="sub-h">標準装備</h3>
-      <dl class="specs">
-        {specs.map((s) => (
-          <div class="spec"><dt>{s.label}</dt><dd>{s.value}</dd></div>
+  <!-- ═══ 間取り ═══ -->
+  <section class="sec sec-plan">
+    <div class="wrap">
+      <p class="kicker">Floor plan</p>
+      <h2>{property.layout}</h2>
+      <p class="lead">{property.structure}・{property.building}。階段のない、ワンフロアの暮らし。</p>
+
+      <div class="plan-grid">
+        <div class="plan-visual">
+          <BrainsImage src={images.plan.src} alt={images.plan.alt} note={images.plan.note} ratio="4 / 3" />
+        </div>
+        <ul class="plan-list">
+          {planPoints.map((pt) => (
+            <li><h3>{pt.title}</h3><p>{pt.body}</p></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 室内ギャラリー ═══ -->
+  <section class="sec sec-gallery">
+    <div class="wrap">
+      <p class="kicker">Interior</p>
+      <h2>家具まで、決まっています。</h2>
+      <p class="lead">
+        ACTUSのコーディネーターが、この家に合わせて選んだ状態でご覧いただけます。
+      </p>
+      <div class="gallery">
+        {images.gallery.map((g) => (
+          <figure class="shot">
+            <BrainsImage src={g.src} alt={g.alt} note={g.note} ratio="4 / 3" />
+            <figcaption>{g.caption}</figcaption>
+          </figure>
         ))}
-      </dl>
-      <p class="note">オプションではありません。すべて標準装備です。あとから足す費用はかかりません。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 設備一覧 ═══ -->
+  <section class="sec sec-facility">
+    <div class="wrap">
+      <p class="kicker">Facilities</p>
+      <h2>標準装備</h2>
+      <p class="lead">オプションではありません。あとから足す費用はかかりません。</p>
+
+      <div class="fac-grid">
+        {specGroups.map((g) => (
+          <div class="fac">
+            <h3>{g.title}</h3>
+            <ul>
+              {g.items.map((it) => (<li>{it}</li>))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -213,8 +273,8 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
   <section class="sec sec-compare">
     <div class="wrap">
       <p class="kicker">Difference</p>
-      <h2>他の家と、何がどう違うのか。</h2>
-      <p class="lead">「品質が高い」「丁寧」ではなく、項目で比べてください。</p>
+      <h2>一般的な新築と、何がどう違うのか。</h2>
+      <p class="lead">「高性能」ではなく、項目で比べてください。</p>
 
       <div class="table-scroll">
         <table class="compare">
@@ -239,57 +299,29 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
         </table>
       </div>
       <p class="note">
-        比較内容は一般的な仕様の傾向をまとめたものです。各社の実際の仕様とは異なる場合があります。
+        右列は一般的な新築住宅の仕様の傾向をまとめたものです。各社の実際の仕様とは異なる場合があります。
       </p>
     </div>
   </section>
 
-  <!-- ═══ 室内ギャラリー ═══ -->
-  <section class="sec sec-gallery">
+  <!-- ═══ 立地 ─ 弱点も書く。隠せば現地で失望される ═══ -->
+  <section class="sec sec-location">
     <div class="wrap">
-      <p class="kicker">Interior</p>
-      <h2>家具まで、決まっています。</h2>
-      <p class="lead">
-        引っ越してから家具を探す必要はありません。ACTUSのコーディネーターが、
-        この家に合わせて選んだ状態でお引き渡しします。
-      </p>
-      <div class="gallery">
-        {images.gallery.map((g) => (
-          <figure class="shot">
-            <BrainsImage src={g.src} alt={g.alt} note={g.note} ratio="4 / 3" />
-            <figcaption>{g.caption}</figcaption>
-          </figure>
-        ))}
-      </div>
-    </div>
-  </section>
+      <p class="kicker">Location</p>
+      <h2>{property.address}</h2>
+      <p class="lead">{location.lead}</p>
 
-  <!-- ═══ 区画ラインナップ ═══ -->
-  <section class="sec sec-units">
-    <div class="wrap">
-      <p class="kicker">Plan</p>
-      <h2>販売中の区画</h2>
-
-      <div class="cards">
-        {units.map((u) => (
-          <article class="card">
-            <BrainsImage src={u.image.src} alt={u.image.alt} note={u.image.note} ratio="16 / 10" className="card-img" />
-            <div class="card-body">
-              <span class="tag">{u.status}</span>
-              <h3>{u.no}</h3>
-              <p class="card-price">{u.price}</p>
-              <dl class="unit-spec">
-                <div><dt>間取り</dt><dd>{u.layout}</dd></div>
-                <div><dt>土地</dt><dd>{u.land}</dd></div>
-                <div><dt>建物</dt><dd>{u.building}</dd></div>
-              </dl>
-              {u.note && <p class="card-note">{u.note}</p>}
-              <a class="btn btn-ghost btn-block" href="#reserve">この区画を見学する</a>
-            </div>
-          </article>
-        ))}
+      <div class="loc-grid">
+        <ul class="loc-list">
+          {location.points.map((pt) => (
+            <li><h3>{pt.title}</h3><p>{pt.body}</p></li>
+          ))}
+        </ul>
+        <div class="loc-visual">
+          <BrainsImage src={images.location.src} alt={images.location.alt} note={images.location.note} ratio="4 / 3" />
+        </div>
       </div>
-      <p class="note">{unitsNote}</p>
+      <p class="note">{location.note}</p>
     </div>
   </section>
 
@@ -297,14 +329,15 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
   <section class="sec sec-narrow">
     <div class="wrap narrow">
       <p class="kicker">Narrow down</p>
-      <h2>大高の区画は、{property.units}です。</h2>
+      <h2>この家は、1棟だけです。</h2>
       <p>
-        分譲住宅は、一軒ごとに土地も間取りもデザインも違います。だから、
-        <strong>気に入った一軒に住めるのは1組だけ</strong>です。
+        モデルハウスですから、同じ家はもうありません。中庭の位置も、109坪の敷地も、
+        8台分の駐車場も、この一軒だけのものです。
       </p>
       <p>
-        急かすつもりはありません。ただ、名古屋市内でこの条件の区画がまとまって出ることは
-        そう多くありません。見てから考えるほうが、後悔は少ないはずです。
+        {property.completion}。急かすつもりはありません。
+        ただ、写真では平屋の広さも中庭の抜けも伝わりません。
+        <strong>見てから考えるほうが、後悔は少ないはずです。</strong>
       </p>
     </div>
   </section>
@@ -327,7 +360,7 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
   <section class="sec sec-reserve" id="reserve">
     <div class="wrap narrow">
       <p class="kicker">Action</p>
-      <h2>30秒で、来場予約。</h2>
+      <h2>30秒で、見学予約。</h2>
 
       <ol class="after">
         {afterSubmit.map((a) => (
@@ -348,31 +381,32 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
         netlify-honeypot="bot-field"
       >
         <input type="hidden" name="form-name" value="brains-odaka-reserve" />
-        <input type="hidden" name="物件" value="ブレインズの家 大高" />
+        <input type="hidden" name="物件" value="【モデルハウス】イシンプレミアム大高" />
         <input type="hidden" name="variant" id="variant-field" value="a" />
         <p class="hp"><label>この欄は入力しないでください <input name="bot-field" /></label></p>
 
+        <!-- 分岐を先頭に。答えた勢いのまま氏名入力へ進んでもらう -->
         <fieldset class="fs">
           <legend>ご希望をお選びください</legend>
           <div class="choices">
             <label class="choice">
-              <input type="radio" name="希望" value="来場予約" checked />
+              <input type="radio" name="希望" value="見学予約" checked />
               <span><strong>現地を見学したい</strong><small>所要約60分</small></span>
             </label>
             <label class="choice">
               <input type="radio" name="希望" value="資料請求" />
-              <span><strong>まず資料を見たい</strong><small>区画図・価格・標準仕様</small></span>
+              <span><strong>まず資料を見たい</strong><small>間取り図・設備・価格</small></span>
             </label>
             <label class="choice">
-              <input type="radio" name="希望" value="相談" />
-              <span><strong>相談だけしたい</strong><small>予算・ローン・住み替え</small></span>
+              <input type="radio" name="希望" value="資金相談" />
+              <span><strong>資金の相談をしたい</strong><small>ローン・住み替え</small></span>
             </label>
           </div>
         </fieldset>
 
         <label class="f">
           <span class="f-label">お名前 <b class="req">必須</b></span>
-          <input type="text" name="お名前" required autocomplete="name" placeholder="名古屋 太郎" />
+          <input type="text" name="お名前" required autocomplete="name" placeholder="山田 太郎" />
         </label>
 
         <label class="f">
@@ -386,23 +420,16 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
         </label>
 
         <label class="f">
-          <span class="f-label">気になっている区画 <b class="opt">任意</b></span>
-          <select name="気になっている区画">
-            <option value="">選択しない（おまかせ）</option>
-            {units.map((u) => (<option value={u.no}>{u.no}</option>))}
-          </select>
-        </label>
-
-        <label class="f">
           <span class="f-label">ご希望の日程 <b class="opt">任意</b></span>
           <input type="text" name="希望日程" placeholder="例）今週末の午後、平日の夕方 など" />
         </label>
 
         <label class="f">
           <span class="f-label">ご質問・ご要望 <b class="opt">任意</b></span>
-          <textarea name="ご要望" rows="3" placeholder="ローンのこと、今のお住まいの売却のことなど"></textarea>
+          <textarea name="ご要望" rows="3" placeholder="資金のこと、今のお住まいの売却のことなど"></textarea>
         </label>
 
+        <!-- 不安を、送信ボタンの真上で潰す -->
         <p class="assure">
           いただいた内容は物件のご案内以外には使用しません。<br />
           <strong>その場での契約のお話や、しつこいご連絡はいたしません。</strong>
@@ -429,6 +456,7 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
           <div class="outline-row"><dt>{o.label}</dt><dd>{o.value}</dd></div>
         ))}
       </dl>
+      <p class="note">{outlineNote}</p>
     </div>
   </section>
 
@@ -436,7 +464,7 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
 
 <footer class="foot">
   <div class="wrap">
-    <p class="foot-brand"><strong>BRAINS</strong> ブレインズの家 大高</p>
+    <p class="foot-brand"><strong>BRAINS</strong> ブレインズの家</p>
     <p>{company.name}</p>
     <p class="foot-areas">{company.address}</p>
     <p class="foot-license">宅地建物取引業免許　{company.license}</p>
@@ -446,7 +474,7 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
 
 <div class="sticky-cta">
   <a class="btn btn-ghost" href={telHref}>電話する</a>
-  <a class="btn btn-primary" href="#reserve">来場予約</a>
+  <a class="btn btn-primary" href="#reserve">見学予約</a>
 </div>
 
 <script is:inline>
@@ -459,16 +487,58 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
 <style is:global>
   /* 大高LP固有のスタイル。共通分は src/styles/brains-lp.css */
 
-  /* FV内の物件ファクト。探している人は「どこ・いくら」を先に知りたい。 */
   .hero-facts {
     display: grid; grid-template-columns: repeat(2, 1fr);
-    gap: .1rem 1.5rem; margin: 0 0 1.8rem;
-    padding: 1.1rem 1.3rem; background: var(--white);
+    gap: 0 1.5rem; margin: 0 0 1.8rem;
+    padding: 1rem 1.3rem; background: var(--white);
     border: 1px solid var(--line); border-radius: 6px;
   }
-  .hero-facts > div { display: flex; gap: .8rem; align-items: baseline; padding: .3rem 0; }
-  .hero-facts dt { font-size: .72rem; color: var(--muted); min-width: 3.5em; flex: none; letter-spacing: .06em; }
-  .hero-facts dd { margin: 0; font-size: .88rem; font-weight: 700; }
+  .hero-facts > div { display: flex; gap: .8rem; align-items: baseline; padding: .35rem 0; }
+  .hero-facts dt { font-size: .7rem; color: var(--muted); min-width: 3.2em; flex: none; letter-spacing: .06em; }
+  .hero-facts dd { margin: 0; font-size: .85rem; font-weight: 700; }
+  .hero-facts dd small { font-weight: 400; font-size: .72rem; color: var(--muted); margin-left: .2em; }
+
+  /* 月々のお支払い ─ 合計だけを孤立させず、内訳と条件を同じ枠に入れる */
+  .sec-monthly { background: var(--white); }
+  .pay {
+    margin: 2rem 0 0; padding: clamp(1.3rem, 3vw, 2rem);
+    background: var(--bg-alt); border-radius: 8px; border: 1px solid var(--line);
+  }
+  .pay-rows { list-style: none; padding: 0; margin: 0; }
+  .pay-rows li {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 1rem; padding: .75rem 0; border-bottom: 1px solid var(--line);
+  }
+  .pay-label { font-size: .9rem; }
+  .pay-value { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; white-space: nowrap; }
+  .pay-rows li.minus .pay-value { color: var(--accent); }
+  .pay-total {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 1rem; padding: 1.2rem 0 .6rem;
+  }
+  .pay-total-label { font-size: .95rem; font-weight: 700; }
+  .pay-total-value {
+    font-family: var(--serif); font-size: clamp(1.8rem, 5vw, 2.6rem);
+    color: var(--amber); font-weight: 600; letter-spacing: -.01em;
+  }
+  .pay-cond { font-size: .76rem; color: var(--muted); margin: 0; padding-top: .6rem; border-top: 1px solid var(--line); }
+
+  /* 間取り */
+  .sec-plan { background: var(--bg-alt); }
+  .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; margin-top: 2rem; }
+  .plan-list { list-style: none; padding: 0; margin: 0; }
+  .plan-list li { padding: 1rem 0; border-top: 1px solid var(--line); }
+  .plan-list li:last-child { border-bottom: 1px solid var(--line); }
+  .plan-list h3 { font-size: .98rem; margin: 0 0 .3rem; color: var(--accent-dark); }
+  .plan-list p { font-size: .86rem; color: #46423d; margin: 0; }
+
+  /* 設備一覧 */
+  .fac-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+  .fac { background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 1.5rem; }
+  .fac h3 { font-size: 1rem; margin: 0 0 .9rem; color: var(--accent); }
+  .fac ul { list-style: none; padding: 0; margin: 0; }
+  .fac li { font-size: .85rem; padding: .4rem 0; border-top: 1px solid var(--line); }
+  .fac li:first-child { border-top: none; }
 
   /* 立地 */
   .sec-location { background: var(--white); }
@@ -479,12 +549,6 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
   .loc-list h3 { font-size: 1rem; margin: 0 0 .4rem; color: var(--accent-dark); }
   .loc-list p { font-size: .88rem; color: #46423d; margin: 0; }
 
-  /* 区画カード */
-  .unit-spec { margin: .6rem 0 1rem; }
-  .unit-spec > div { display: flex; gap: .8rem; padding: .3rem 0; border-top: 1px solid var(--line); font-size: .8rem; }
-  .unit-spec dt { color: var(--muted); min-width: 4em; flex: none; }
-  .unit-spec dd { margin: 0; }
-
   /* 物件概要 */
   .sec-outline { background: var(--bg-alt); }
   .outline { margin: 2rem 0 0; }
@@ -494,9 +558,12 @@ const telHref = `tel:${company.tel.replace(/[^0-9]/g, "")}`;
   .outline dd { margin: 0; }
 
   @media (max-width: 860px) {
-    .loc-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-    .loc-visual { order: -1; }
+    .plan-grid, .loc-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .plan-visual, .loc-visual { order: -1; }
     .hero-facts { grid-template-columns: 1fr; }
+    .fac-grid { grid-template-columns: 1fr; }
+    .outline-row { flex-direction: column; gap: .2rem; }
+    .outline dt { min-width: 0; }
   }
 </style>
 
